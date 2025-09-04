@@ -6,6 +6,6 @@ export const parseInput = (input) => {
 };
 
 export const execute = (input, data) => {
-	const res = 0;
+	let res = 0;
 	return { res };
 };

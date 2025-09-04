@@ -3,7 +3,7 @@ import path from 'node:path';
 // import { solution } from './solutions/sep-2025-long/problem-a.js';
 
 const challenge = 'sep-25-long';
-const problemId = 2;
+const problemId = 5 - 1;
 const test = false;
 
 const getId = (index) => String.fromCharCode(65 + index);
