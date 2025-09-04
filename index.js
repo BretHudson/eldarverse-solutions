@@ -3,7 +3,7 @@ import path from 'node:path';
 // import { solution } from './solutions/sep-2025-long/problem-a.js';
 
 const challenge = 'sep-25-long';
-const problemId = 0;
+const problemId = 2;
 const test = false;
 
 const getId = (index) => String.fromCharCode(65 + index);
@@ -29,17 +29,23 @@ const getInputPathFunc = test ? getTestInputPath : getInputPath;
 const inputPath = getInputPathFunc(challenge, problemId);
 const input = fs.readFileSync(inputPath, 'utf-8');
 const execute = ({ parseInput, execute }) => {
-	const { T, inputs } = parseInput(input);
+	const { T, inputs, data, singleTestcase } = parseInput(input);
 	if (T !== inputs.length) throw new Error('invalid');
 
 	const outputs = [];
-	for (let i = 1; i <= T; ++i) {
-		const { K, lines = [] } = execute(inputs[i - 1]);
-		outputs.push(`Case #${i}: ${K}`, ...lines);
+	if (singleTestcase) {
+		const { lines = [] } = execute(inputs, data);
+		outputs.push(`Case #1:`, ...lines);
+	} else {
+		for (let i = 1; i <= T; ++i) {
+			const { res, lines = [] } = execute(inputs[i - 1], data);
+			outputs.push(`Case #${i}: ${res}`, ...lines);
+		}
 	}
 	return outputs.join('\n');
 };
 const output = execute(program);
+console.log(output);
 
 const outputPath = getOutputPath(challenge, problemId);
 fs.writeFileSync(outputPath, output);
