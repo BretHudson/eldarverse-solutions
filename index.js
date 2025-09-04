@@ -23,12 +23,23 @@ const getSolutionPath = (challengeDir, index) => {
 };
 
 const file = getSolutionPath(challenge, problemId);
-const { solution } = await import(file);
+const program = await import(file);
 
 const getInputPathFunc = test ? getTestInputPath : getInputPath;
 const inputPath = getInputPathFunc(challenge, problemId);
 const input = fs.readFileSync(inputPath, 'utf-8');
-const output = solution(input);
+const execute = ({ parseInput, execute }) => {
+	const { T, inputs } = parseInput(input);
+	if (T !== inputs.length) throw new Error('invalid');
+
+	const outputs = [];
+	for (let i = 1; i <= T; ++i) {
+		const { K, lines = [] } = execute(inputs[i - 1]);
+		outputs.push(`Case #${i}: ${K}`, ...lines);
+	}
+	return outputs.join('\n');
+};
+const output = execute(program);
 
 const outputPath = getOutputPath(challenge, problemId);
 fs.writeFileSync(outputPath, output);
