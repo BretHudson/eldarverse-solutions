@@ -2,12 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Parser } from './util/parser.js';
 
-const problemId = 'sep-25-long-E';
+const problemId = 'sep-25-long-G';
 
 const parts = problemId.split('-');
 const problemIndex = parts.pop();
 const challenge = parts.join('-');
-const test = true;
+const test = false;
 
 const getId = (index) => {
 	return typeof index === 'string' ? index : String.fromCharCode(65 + index);
@@ -46,8 +46,9 @@ const execute = ({ parseInput, execute }) => {
 		outputs.push(`Case #1:`, ...lines);
 	} else {
 		for (let i = 1; i <= T; ++i) {
-			const { res, lines = [] } = execute(inputs[i - 1], data);
-			outputs.push(`Case #${i}: ${res}`, ...lines);
+			const { res = '', lines = [] } = execute(inputs[i - 1], data);
+			const caseLine = [`Case #${i}:`, res].filter((v) => v != null).join(' ');
+			outputs.push(caseLine, ...lines);
 		}
 	}
 	return outputs.join('\n');
