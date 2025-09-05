@@ -1,15 +1,16 @@
 export const parseInput = (input) => {
-	const lines = input.split('\n').filter(Boolean);
-	const T = +lines[0];
+	const T = input.getInteger();
 
-	const inputs = lines.slice(1, 1 + T);
+	const inputs = input.getLines(T);
+
+	input.getLine(); // skip the =====
 
 	return {
 		T,
 		singleTestcase: true,
 		inputs,
 		data: {
-			sequence: lines.at(-1),
+			sequence: input.getLine(),
 		},
 	};
 };

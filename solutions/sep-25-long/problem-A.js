@@ -1,8 +1,7 @@
 export const parseInput = (input) => {
-	const lines = input.split('\n').filter(Boolean);
-	const T = +lines[0];
+	const T = input.getInteger();
 
-	return { T, inputs: lines.slice(1) };
+	return { T, inputs: input.getRemainingLines() };
 };
 
 export const execute = (input) => {

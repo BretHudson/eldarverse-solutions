@@ -1,12 +1,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
-// import { solution } from './solutions/sep-2025-long/problem-a.js';
+import { Parser } from './util/parser.js';
 
-const challenge = 'sep-25-long';
-const problemId = 4 - 1;
-const test = false;
+const problemId = 'sep-25-long-E';
 
-const getId = (index) => String.fromCharCode(65 + index);
+const parts = problemId.split('-');
+const problemIndex = parts.pop();
+const challenge = parts.join('-');
+const test = true;
+
+const getId = (index) => {
+	return typeof index === 'string' ? index : String.fromCharCode(65 + index);
+};
 const _getInputOutputPath = (io, challenge, index, type) => {
 	const fileName = ['problem', challenge, getId(index), type].join('-');
 	return path.join(io, `${fileName}.txt`);
@@ -22,15 +27,18 @@ const getSolutionPath = (challengeDir, index) => {
 	return `./solutions/${challengeDir}/problem-${getId(index)}.js`;
 };
 
-const file = getSolutionPath(challenge, problemId);
+const file = getSolutionPath(challenge, problemIndex);
 const program = await import(file);
 
 const getInputPathFunc = test ? getTestInputPath : getInputPath;
-const inputPath = getInputPathFunc(challenge, problemId);
-const input = fs.readFileSync(inputPath, 'utf-8');
+const inputPath = getInputPathFunc(challenge, problemIndex);
+const rawInput = fs.readFileSync(inputPath, 'utf-8');
+
 const execute = ({ parseInput, execute }) => {
+	const input = new Parser(rawInput);
 	const { T, inputs, data, singleTestcase } = parseInput(input);
-	if (T !== inputs.length) throw new Error('invalid');
+	if (T !== inputs.length)
+		throw new Error(`Expected ${T} inputs, received ${inputs.length}`);
 
 	const outputs = [];
 	if (singleTestcase) {
@@ -47,5 +55,5 @@ const execute = ({ parseInput, execute }) => {
 const output = execute(program);
 console.log(output);
 
-const outputPath = getOutputPath(challenge, problemId);
+const outputPath = getOutputPath(challenge, problemIndex);
 fs.writeFileSync(outputPath, output);
