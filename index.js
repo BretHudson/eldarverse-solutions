@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Parser } from './util/parser.js';
 
-const problemId = 'sep-25-long-G';
+const problemId = 'sep-25-long-M';
 
 const parts = problemId.split('-');
 const problemIndex = parts.pop();
